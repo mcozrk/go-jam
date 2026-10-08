@@ -12,14 +12,9 @@ import (
 // shuffleCmd represents the shuffle command
 var shuffleCmd = &cobra.Command{
 	Use:   "shuffle",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: shuffleMusic,
+	Short: "Shuffle all songs within the music library",
+	Long:  `Shuffle all songs within the music library`,
+	Run:   shuffleMusic,
 }
 
 func init() {

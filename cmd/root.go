@@ -13,8 +13,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "jam",
 	Short: "Music player built in Go using Cobra CLI",
-	Long: `Jam is a CLI Music Player that allows users to listen to music within your terminal. 
-	This application was made for fun.`,
+	Long:  `Jam is a CLI Music Player that allows users to listen to music within the terminal`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) {},
