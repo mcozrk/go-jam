@@ -6,9 +6,11 @@ package cmd
 import (
 	"fmt"
 	"jam/audio"
-	"time"
+	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
+	"go.senan.xyz/taglib"
 )
 
 // listCmd represents the list command
@@ -34,25 +36,46 @@ func init() {
 }
 
 func listSongs(cmd *cobra.Command, args []string) {
+	files, err := os.ReadDir(filepath.Join("music"))
 
-	//TODO: remove this placeholder and actuall set song library here
-	// **********************
-	song := audio.Song{
-		Name:     "test",
-		Artist:   "artist",
-		Album:    "album",
-		Duration: time.Now()} // initializes songs var
-
-	song2 := audio.Song{
-		Name:     "test2",
-		Artist:   "artist2",
-		Album:    "album2",
-		Duration: time.Now()} // initializes songs var
-
-	songs := []audio.Song{song, song2}
-	//************************
-
-	for _, song := range songs {
-		fmt.Printf("%s %s %s %s\n", song.Name, song.Artist, song.Album, song.Duration)
+	if err != nil {
+		fmt.Printf("error reading music directory: %v\n", err)
+		return
 	}
+
+	songs := []audio.Song{}
+
+	for _, f := range files {
+		if f.IsDir() {
+			continue
+		}
+
+		tags, err := taglib.ReadTags(filepath.Join("music", f.Name()))
+
+		if err != nil {
+			fmt.Printf("error reading tags for %s: %v\n", f.Name(), err)
+			continue
+		}
+
+		song := audio.Song{
+			Name:   getTag(tags, taglib.Title),
+			Artist: getTag(tags, taglib.Artist),
+			Album:  getTag(tags, taglib.Album),
+		}
+
+		songs = append(songs, song)
+	}
+
+	for i, song := range songs {
+		fmt.Printf("%d. %s - %s - %s\n", i+1, song.Name, song.Artist, song.Album)
+	}
+}
+
+func getTag(tags map[string][]string, key string) string {
+	values, ok := tags[key]
+	if !ok || len(values) == 0 {
+		return ""
+	}
+
+	return values[0]
 }
