@@ -26,6 +26,17 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
+
+	// TODO
+	// while executing{
+	// if isPaused()
+	// log the visual pause button as paused
+
+	// if isStopped()
+	// visually log 'Music Player Closing...'
+	// os.Exit(0)
+	// }
+
 }
 
 func init() {
